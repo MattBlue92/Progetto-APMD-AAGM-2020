@@ -25,5 +25,5 @@ install:
 
   
 script:
-  - python -m unittest -v sripts.tests.exampleScript
+  - python -m unittest -v scripts.tests.exampleScript
   - py.test
