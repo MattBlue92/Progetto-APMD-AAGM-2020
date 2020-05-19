@@ -25,5 +25,6 @@ install:
 
   
 script:
-  - python -m unittest -v scripts.tests.exampleScript
+  - python -m unittest -v scripts.tests.ToolsTest
+  - python -m unittest -v scripts.tests.BuilderGraphTest
   - py.test

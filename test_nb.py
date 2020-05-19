@@ -10,5 +10,5 @@ def _exec_notebook(path):
         subprocess.check_call(args)
 
 
-def test_simple_notebook():
-    _exec_notebook('notebooks/simpleNotebook.ipynb')
+def test_building_graph():
+    _exec_notebook('notebooks/Building_graph.ipynb')
