@@ -11,4 +11,4 @@ def _exec_notebook(path):
 
 
 def test_building_graph():
-    _exec_notebook('notebooks/Building the graph.ipynd')
+    _exec_notebook('notebooks/Building\ the\ graph.ipynd')
