@@ -20,7 +20,7 @@ class BuilderGraph(object):
 
         for cityA in cities:
             for cityB in cities:
-                matrixAdj.append(self.tool.isConnected(cityA, cityB))
+                matrixAdj.append(self.tool.isConnected(cityA, cityB, self.d))
 
         matrixAdj = np.array(matrixAdj)
         matrixAdj = matrixAdj.reshape(numVertices, numVertices)

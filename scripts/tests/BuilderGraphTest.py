@@ -11,7 +11,7 @@ from scripts.src.Tools import Tools
 class BuilderGraphTest(unittest.TestCase):
     
     def setUp(self) -> None:
-        self.builderGraph = BuilderGraph(0.5)
+        self.builderGraph = BuilderGraph(0.8)
         self.tools = Tools()
 
     def testBuildGraphWhenInputsAreNoneShouldRiseExp(self):
@@ -31,7 +31,7 @@ class BuilderGraphTest(unittest.TestCase):
 
         for cityA in cities:
             for cityB in cities:
-                matrixAdj.append(self.tools.isConnected(cityA, cityB))
+                matrixAdj.append(self.tools.isConnected(cityA, cityB, 0.8))
 
         matrixAdj = np.array(matrixAdj)
         matrixAdj = matrixAdj.reshape(df.shape[0], df.shape[0])
