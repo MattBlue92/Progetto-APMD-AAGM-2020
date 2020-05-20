@@ -2,20 +2,14 @@ import unittest
 
 import networkx as nx
 
-from scripts.src.BuilderGraph import BuilderGraph
 from scripts.src.Tools import Connections
 from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
+from scripts.src.BuilderGraphWithMerge import BuilderGraphWithMerge
 
-
-class BuilderGraphTest(unittest.TestCase, BuilderGraphTestingManeger):
+class BuilderGraphWithMergeTest(unittest.TestCase,  BuilderGraphTestingManeger):
     def setUp(self) -> None:
-        self.builderGraph = BuilderGraph(0.8)
+        self.builderGraph = BuilderGraphWithMerge(0.8)
         self.tools = Connections(0.8)
-
-    def testBuildGraphWhenInputsAreNoneShouldRiseExp(self):
-        df = None
-        with self.assertRaises(TypeError):
-            self.builderGraph.buildGraph(df)
 
     def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
         df = self.create_dataset_test()

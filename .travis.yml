@@ -27,4 +27,5 @@ install:
 script:
   - python -m unittest -v scripts.tests.ToolsTest
   - python -m unittest -v scripts.tests.BuilderGraphTest
+  - python -m unittest -v BuilderGraphWithMergeTest.py
   - py.test

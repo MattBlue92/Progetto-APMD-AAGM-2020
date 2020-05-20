@@ -1,6 +1,6 @@
 import networkx as nx
 
-from scripts.src.Tools import Tools
+from scripts.src.Tools import Connections
 import numpy as np
 
 class BuilderGraph(object):
@@ -8,7 +8,7 @@ class BuilderGraph(object):
     def __init__(self, d):
         self.d = d
         #self.vertices = vertices
-        self.tool = Tools()
+        self.tool = Connections(self.d)
 
     def buildGraph(self, df):
         if df is None:
@@ -20,7 +20,7 @@ class BuilderGraph(object):
 
         for cityA in cities:
             for cityB in cities:
-                matrixAdj.append(self.tool.isConnected(cityA, cityB, self.d))
+                matrixAdj.append(self.tool.isConnected(cityA, cityB))
 
         matrixAdj = np.array(matrixAdj)
         matrixAdj = matrixAdj.reshape(numVertices, numVertices)
