@@ -13,7 +13,6 @@ class BuilderGraphNearestNeighbors(BuilderGraph):
             raise TypeError("Inputs are not not valide. long or lat is None. Please insert valid data!")
 
         list_edges=[]
-
         df.apply(lambda e: list_edges.extend(self.city_subgraph(e,df.copy())), axis=1)
         graph=nx.Graph()
         graph.add_edges_from(list_edges)
@@ -44,5 +43,7 @@ class BuilderGraphNearestNeighbors(BuilderGraph):
         while (not end_list and i < sorted_list.shape[0]):
             if sorted_list[i][2] <= self.d:
                 adjacent_cities.append(sorted_list[i][0])
+            else:
+                end_list=True
             i = i + 1
         return adjacent_cities
