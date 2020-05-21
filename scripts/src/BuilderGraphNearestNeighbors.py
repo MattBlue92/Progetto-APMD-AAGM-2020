@@ -27,8 +27,8 @@ class BuilderGraphNearestNeighbors(BuilderGraph):
         long_sort=long_sort.values
         lat_sort=lat_sort.values
 
-        long_cities = self.create_adjacent_cities(long_sort)
-        lat_cities=self.create_adjacent_cities(lat_sort)
+        long_cities = self.create_adjacent_cities(long_sort, 2)
+        lat_cities=self.create_adjacent_cities(lat_sort, 1)
 
         list_edges=[]
         for x in long_cities:
@@ -36,14 +36,14 @@ class BuilderGraphNearestNeighbors(BuilderGraph):
                 list_edges.append((e[0], x))
         return list_edges
 
-    def create_adjacent_cities(self, sorted_list):
+    def create_adjacent_cities(self, sorted_list, index):
         adjacent_cities = []
         i = 0
         end_list = False
         while (not end_list and i < sorted_list.shape[0]):
-            if sorted_list[i][2] <= self.d:
-                adjacent_cities.append(sorted_list[i][0])
-            else:
-                end_list=True
-            i = i + 1
+                if sorted_list[i][index] <= self.d:
+                    adjacent_cities.append(sorted_list[i][0])
+                else:
+                    end_list=True
+                i = i + 1
         return adjacent_cities
