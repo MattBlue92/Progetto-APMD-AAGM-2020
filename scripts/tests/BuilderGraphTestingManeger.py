@@ -18,7 +18,7 @@ class BuilderGraphTestingManeger:
 
     def create_dataset_test(self):
         df = {'citta': ['Chieti', 'Acquila', 'Pescara', 'Teramo'],
-              'lat': [42.351031167, 42.35122126, 42.46458398, 40.66751177],
+              'lat': [42.351031167, 42.35122126, 42.46458398, 42.658918],
               'long': [14.167754574, 13.39843823, 14.2136422, 13.704439971]
               }
         df = pd.DataFrame(df)
