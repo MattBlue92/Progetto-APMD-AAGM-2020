@@ -24,8 +24,5 @@ class BuilderGraphTestingManeger:
         df = pd.DataFrame(df)
         return df
 
-    def testBuildGraphWhenInputsAreNoneShouldRiseExp(self):
-        pass
-
     def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
         pass

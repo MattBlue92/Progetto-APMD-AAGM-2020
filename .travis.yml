@@ -29,4 +29,5 @@ script:
   - python -m unittest -v scripts.tests.BuilderGraphTest
   - python -m unittest -v scripts.tests.BuilderGraphWithMergeTest
   - python -m unittest -v scripts.tests.BuilderGraphNearestNeighborsTest
+  - python -m unittest -v scripts.tests.BuilderGraphWithRtreeTest
   - py.test
