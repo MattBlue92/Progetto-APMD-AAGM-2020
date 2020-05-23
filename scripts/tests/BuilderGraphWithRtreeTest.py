@@ -9,7 +9,8 @@ from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 class BuilderGraphWithRteeTest(unittest.TestCase,  BuilderGraphTestingManeger):
     def setUp(self) -> None:
         self.df = self.create_dataset_test()
-        self.builderGraph = BuilderGraphWithRtree(0.8, self.df)
+        coordinates = [tuple(r) for r in self.df.to_numpy()]
+        self.builderGraph = BuilderGraphWithRtree(0.8, coordinates)
         self.tools = Connections(0.8)
 
     def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
