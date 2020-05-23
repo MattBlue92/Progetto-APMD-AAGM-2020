@@ -4,29 +4,27 @@ from scripts.src.BuilderGraph import BuilderGraph
 from rtree import index
 
 class BuilderGraphWithRtree:
-    def __init__(self, d, df):
+    def __init__(self, d, data):
         self.d=d
-        self.df=df
-        self.i=0
-        self.rtree = index.Index()
-        self.initialization()
+        self.data=data
+        self.mapping = {}
+        self.rtree = index.Index(self.generator_function())
 
-    def initialization(self):
-        self.df.apply(self.insert, axis=1)
+    def generator_function(self):
+        for i, obj in enumerate(self.data):
+            self.mapping[i] =  obj[0]
+            yield (i, (obj[1], obj[2], obj[1], obj[2]), obj[0])
 
-    def insert(self, e):
-        self.rtree.insert(self.i, (e["long"], e["lat"], e["long"], e["lat"]), obj=e["citta"])
-        self.i=self.i+1
 
     def intersection(self):
-        myDict = {}
-        self.df.apply(lambda e: myDict.update(self.create_dictionary(e)), axis=1)
-        return nx.Graph(myDict)
+        myDict = {obj[0]:list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d))) for obj in self.data}
+        graph = nx.Graph(myDict)
+        nx.relabel_nodes(graph, mapping=self.mapping, copy= False)
+        return graph
 
 
-    def create_dictionary(self, e):
-        myDict={}
-        temp = list(self.rtree.intersection(
-            (e["long"] - self.d, e["lat"] - self.d, e["long"] + self.d, e["lat"] + self.d), objects=True))
-        myDict[e["citta"]] = [(item.object) for item in temp]
-        return myDict
+    #def createDict(self, obj):
+    #    temp =  list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d),objects=True))
+    #    myDict = {obj[0]:[(item.object) for item in temp]}
+    #    print(myDict)
+    #    return myDict
