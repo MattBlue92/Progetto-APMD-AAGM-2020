@@ -1,7 +1,7 @@
 import unittest
 import networkx as nx
 
-from scripts.src.BuiderGraphWithRtree import BuilderGraphWithRtree
+from scripts.src.BuilderGraphWithRtree import BuilderGraphWithRtree
 from scripts.src.Tools import Connections
 from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 
@@ -13,12 +13,12 @@ class BuilderGraphWithRteeTest(unittest.TestCase,  BuilderGraphTestingManeger):
         self.tools = Connections(0.8)
 
     def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
-        result = self.builderGraph.intersection()
+        result = self.builderGraph.buildGraph()
         expectedGraph = self.expected_graph_creation(self.df)
         self.assertTrue(nx.is_isomorphic(expectedGraph, result))
 
     def testBuildGraphWithWeight(self):
-        result=self.builderGraph.intersection(flag=True)
+        result=self.builderGraph.buildGraph(flag=True)
         expectedGraph=self.weighted_graph_creation(self.df)
         self.assertEqual(expectedGraph.adj.items(), result.adj.items())
 
