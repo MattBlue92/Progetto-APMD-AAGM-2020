@@ -1,4 +1,6 @@
 import networkx as nx
+import pandas as pd
+import numpy as np
 
 from scripts.src.BuilderGraph import BuilderGraph
 from rtree import index
@@ -18,32 +20,37 @@ class BuilderGraphWithRtree:
 
 
     def intersection(self, flag=False):
+        myDict = {
+            obj[0]: list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d)))
+            for obj in self.data}
         if flag:
             # weighted graph
-            myDict = {obj[0]: self.createDict(obj)for obj in self.data}
-            graph = nx.Graph(myDict)
-#            nx.relabel_nodes(graph, mapping=self.mapping, copy= False)
+            # creation of adjacency verteces dataset
+            dataset = pd.DataFrame.from_dict(myDict, orient="index").stack().to_frame()
+            dataset.reset_index(inplace=True)
+            dataset = dataset.rename(columns={"level_0": "first_vertex", "level_1": "level", 0: "second_vertex"})
+            dataset["second_vertex"] = dataset["second_vertex"].astype(int)
+            dataset = dataset.drop(columns=["level"])
+            second_vertex=dataset["second_vertex"].values
+            second_vertex=np.array(list(map(lambda elem: self.mapping[elem], second_vertex)))
+            dataset["second_vertex"]=second_vertex
+
+            # compute the distances
+            first_vertex = dataset.first_vertex.values
+            second_vertex = dataset.second_vertex.values
+            x_first = np.array(list(map(lambda elem: self.df[self.df["citta"] == elem].long.values[0], first_vertex)))
+            y_first = np.array(list(map(lambda elem: self.df[self.df["citta"] == elem].lat.values[0], first_vertex)))
+            x_second = np.array(list(map(lambda elem: self.df[self.df["citta"] == elem].long.values[0], second_vertex)))
+            y_second = np.array(list(map(lambda elem: self.df[self.df["citta"] == elem].lat.values[0], second_vertex)))
+            dataset["weight"] = np.sqrt(np.power(x_first - x_second, 2) + np.power(y_first - y_second, 2))
+
+            graph= nx.from_pandas_edgelist(dataset, "first_vertex", "second_vertex", ['weight'])
             return graph
         else:
-            myDict = {obj[0]:list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d))) for obj in self.data}
             graph = nx.Graph(myDict)
             nx.relabel_nodes(graph, mapping=self.mapping, copy= False)
             return graph
 
-    def createDict(self, obj):
-        temp=list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d)))
-        myDict={}
-        for elem_list in temp:
-            myDict.update({self.mapping[elem_list]: {'weight':self.euclidean_distance(obj[0], elem_list)}})
-        return myDict
-
-    def euclidean_distance(self, obj, elem_list):
-        from math import sqrt
-        x_1=self.df[self.df["citta"]==obj].long.values[0]
-        x_2=self.df[self.df["citta"] == obj].lat.values[0]
-        y_1=self.df[self.df["citta"]==self.mapping[elem_list]].long.values[0]
-        y_2=self.df[self.df["citta"] == self.mapping[elem_list]].lat.values[0]
-        return sqrt((x_1-x_2)**2+(y_1-y_2)**2)
         #def createDict(self, obj):
     #    temp =  list(self.rtree.intersection((obj[1] - self.d, obj[2] - self.d, obj[1] + self.d, obj[2] + self.d),objects=True))
     #    myDict = {obj[0]:[(item.object) for item in temp]}

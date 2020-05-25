@@ -34,8 +34,8 @@ class BuilderGraphWithRteeTest(unittest.TestCase,  BuilderGraphTestingManeger):
     def euclidean_distance(self, n, nbr, df):
         from math import sqrt
         x_1=df[df["citta"]==n].long.values[0]
-        x_2=df[df["citta"] == n].lat.values[0]
-        y_1=df[df["citta"]==nbr].long.values[0]
+        y_1=df[df["citta"] == n].lat.values[0]
+        x_2=df[df["citta"]==nbr].long.values[0]
         y_2=df[df["citta"] == nbr].lat.values[0]
         return sqrt((x_1-x_2)**2+(y_1-y_2)**2)
 
