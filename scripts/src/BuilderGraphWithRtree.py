@@ -2,7 +2,6 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 
-from scripts.src.BuilderGraph import BuilderGraph
 from rtree import index
 
 class BuilderGraphWithRtree:
