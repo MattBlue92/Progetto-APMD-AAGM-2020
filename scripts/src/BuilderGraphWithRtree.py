@@ -29,10 +29,12 @@ class BuilderGraphWithRtree:
             self.computeDistance(dataset)
 
             graph= nx.from_pandas_edgelist(dataset, "first_vertex", "second_vertex", ['weight'])
+            graph.remove_edges_from(nx.selfloop_edges(graph))
             return graph
         else:
             graph = nx.Graph(myDict)
             nx.relabel_nodes(graph, mapping=self.mapping, copy= False)
+            graph.remove_edges_from(nx.selfloop_edges(graph))
             return graph
 
 
