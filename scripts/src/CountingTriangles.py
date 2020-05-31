@@ -18,7 +18,8 @@ class ObviousAlgorithm(CountingTriangles):
         triangles = {}
         for v in graph.nodes:
             nodes = list(graph.nodes)
-            nodes.remove(v)
+            if v in nodes:
+                nodes.remove(v)
             couples = combinations(nodes, 2)
             t = self.countTrianglesFromCouples(couples, graph, v)
             triangles[v] = t
@@ -30,7 +31,8 @@ class EnumeratingNeighborPairs(CountingTriangles):
         triangles = {}
         for v in graph.nodes():
             neighbors = list(graph[v])
-            neighbors.remove(v)
+            if v in neighbors:
+                neighbors.remove(v)
             couples = combinations(neighbors, 2)
             t = self.countTrianglesFromCouples(couples, graph, v)
             triangles[v] = t
