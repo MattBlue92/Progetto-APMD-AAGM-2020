@@ -1,5 +1,5 @@
 /data/P.adjlist
-/data/P_weight.adjlist
 /data/R.adjlist
-/data/R_weight.adjlist
 /notebooks/.ipynb_checkpoints/
+/data/P_weight.edgelist
+/data/R_weight.edgelist
