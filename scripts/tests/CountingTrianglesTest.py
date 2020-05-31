@@ -30,5 +30,7 @@ class CountingTrianglesTest(unittest.TestCase):
         self.assertEqual(expectedTriangles, actualTriangles)
 
 
+
+
 if __name__ == '__main__':
     unittest.main()
