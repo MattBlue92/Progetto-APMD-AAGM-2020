@@ -1,8 +1,8 @@
 import unittest
-
-from scripts.src.CountingTriangles import CountingTriangles
-from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 import networkx as nx
+
+import scripts.src.CountingTriangles as ct
+from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 
 
 class CountingTrianglesTest(unittest.TestCase):
@@ -11,26 +11,22 @@ class CountingTrianglesTest(unittest.TestCase):
         manager = BuilderGraphTestingManeger()
         df = manager.create_dataset_test()
         self.graph = manager.expected_graph_creation(df)
-        self.triangles = CountingTriangles()
 
-    def testObviusAlgo(self):
-        expectedTriangles = nx.triangles(self.graph)
-        actualTriangles = self.triangles.obviusAlgo(self.graph)
-        self.assertEqual(expectedTriangles, actualTriangles)
+    def testObviousAlgorithm(self):
+        self.manageCountingTrianglesTesting(ct.ObviousAlgorithm())
 
-    def testalgoEnum(self):
-        expectedTriangles = nx.triangles(self.graph)
-        actualTriangles = self.triangles.algoEnum(self.graph)
-        print(actualTriangles)
-        self.assertEqual(expectedTriangles, actualTriangles)
+    def testEnumeratingNeighborPairs(self):
+        self.manageCountingTrianglesTesting(ct.EnumeratingNeighborPairs())
 
-    def testLowDregree(self):
+    def testDelegatingLowDegreeVertices(self):
         expectedTriangles = sum(nx.triangles(self.graph).values())/3
-        actualTriangles = self.triangles.lowDregree(self.graph)
+        actualTriangles = ct.DelegatingLowDegreeVertices().run(self.graph)
         self.assertEqual(expectedTriangles, actualTriangles)
 
-
-
+    def manageCountingTrianglesTesting(self, counter):
+        expectedTriangles = nx.triangles(self.graph)
+        actualTriangles = counter.run(self.graph)
+        self.assertEqual(expectedTriangles, actualTriangles)
 
 if __name__ == '__main__':
     unittest.main()
