@@ -14,6 +14,7 @@ class BuilderGraphTestingManeger:
         matrixAdj = np.array(matrixAdj)
         matrixAdj = matrixAdj.reshape(df.shape[0], df.shape[0])
         expectedGraph = nx.from_numpy_array(matrixAdj)
+        expectedGraph.remove_edges_from(nx.selfloop_edges(expectedGraph))
         return expectedGraph
 
     def create_dataset_test(self):
