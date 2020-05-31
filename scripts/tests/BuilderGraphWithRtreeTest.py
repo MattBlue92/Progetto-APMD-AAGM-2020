@@ -6,15 +6,16 @@ from scripts.src.Tools import Connections
 from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 
 
-class BuilderGraphWithRteeTest(unittest.TestCase,  BuilderGraphTestingManeger):
+class BuilderGraphWithRteeTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.df = self.create_dataset_test()
+        self.manager = BuilderGraphTestingManeger()
+        self.df = self.manager.create_dataset_test()
         self.builderGraph = BuilderGraphWithRtree(0.8, self.df)
         self.tools = Connections(0.8)
 
     def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
         result = self.builderGraph.buildGraph()
-        expectedGraph = self.expected_graph_creation(self.df)
+        expectedGraph = self.manager.expected_graph_creation(self.df)
         self.assertTrue(nx.is_isomorphic(expectedGraph, result))
 
     def testBuildGraphWithWeight(self):
@@ -23,7 +24,7 @@ class BuilderGraphWithRteeTest(unittest.TestCase,  BuilderGraphTestingManeger):
         self.assertEqual(expectedGraph.adj.items(), result.adj.items())
 
     def weighted_graph_creation(self, df):
-        graph = self.expected_graph_creation(df)
+        graph = self.manager.expected_graph_creation(df)
         mapping={0:'Chieti', 1:'Acquila', 2:'Pescara', 3:'Teramo'}
         nx.relabel_nodes(graph, mapping,  copy=False)
         for n, nbrs in graph.adj.items():

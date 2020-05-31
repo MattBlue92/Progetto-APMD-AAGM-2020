@@ -2,8 +2,13 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
+from scripts.src.Tools import Connections
+
 
 class BuilderGraphTestingManeger:
+
+    def __init__(self):
+        self.tools = Connections(0.8)
 
     def expected_graph_creation(self, df):
         matrixAdj = []
@@ -23,6 +28,3 @@ class BuilderGraphTestingManeger:
               }
         df = pd.DataFrame(df)
         return df
-
-    def testBuildGraphWhenInputsAreCorrectShouldBackAGraph(self):
-        pass
