@@ -12,3 +12,6 @@ def _exec_notebook(path):
 
 def test_building_graph():
     _exec_notebook('notebooks/Building_graph.ipynb')
+
+def test_counting_triangles():
+    _exec_notebook('notebooks/Counting_triangles.ipynb')
