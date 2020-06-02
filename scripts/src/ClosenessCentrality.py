@@ -7,6 +7,7 @@ class ClosenessCentrality():
     def __init__(self):
         np.random.seed(42)
 
+
     def closenessUsingUtilities(self, graph, networkx=False):
         closeness = {}
         for v in graph.nodes():
@@ -45,33 +46,14 @@ class ClosenessCentrality():
 
         return closeness
 
-
-    def distance(self, bfsTree, v, w):
-        distance = 0
-        bfsTree = bfsTree.reverse(copy = True)
-        while v!=w:
-            #neighbors = list(bfsTree[w])
-            if w  in list(bfsTree.nodes()):
-                neighbors = list(bfsTree[w])
-                w = neighbors.pop()
-                distance = distance+1
-            else:
-                break
-        return  distance
-
-
     def closenessUsingEWAlgorithm(self, graph, epsilon):
         n = len(graph)
         k = int(math.log(n,10) / np.power(epsilon, 2))
         closeness = {}
         i = 0
         for u in graph.nodes():
-            #bfsTree = nx.bfs_tree(graph, u)
             fv = 0
-            #nodes = np.array(list(bfsTree.nodes()))
             nodes = np.random.choice(list(graph.nodes()), size= k, replace= False)
-            #nodes= nodes[0]
-            #print("Iteration {} : {}".format(i,nodes))
             i = i+1
             for w in nodes:
                 bfsTree = nx.bfs_tree(graph, w)
@@ -87,7 +69,6 @@ class ClosenessCentrality():
 
 
     def armonicCloseness(self, graph):
-
         closeness ={}
         for v in graph.nodes():
             bfsTree = nx.bfs_tree(graph, v)
@@ -95,10 +76,22 @@ class ClosenessCentrality():
             for w in bfsTree.nodes():
                 distance = self.distance(bfsTree, v, w)
                 if distance>0:
-                    fv = fv + 1/distance #vs my version
+                    fv = fv + 1/distance
             if fv!=0:
                 closeness[v] = fv
             else:
                 closeness[v] = 0
 
         return  closeness
+
+    def distance(self, bfsTree, v, w):
+        distance = 0
+        bfsTree = bfsTree.reverse(copy = True)
+        while v!=w:
+            if w  in list(bfsTree.nodes()):
+                neighbors = list(bfsTree[w])
+                w = neighbors.pop()
+                distance = distance+1
+            else:
+                break
+        return  distance
