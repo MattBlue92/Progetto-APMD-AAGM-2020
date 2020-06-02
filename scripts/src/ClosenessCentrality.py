@@ -43,8 +43,11 @@ class ClosenessCentrality():
         bfsTree = bfsTree.reverse(copy = True)
         while v!=w:
             neighbors = list(bfsTree[w])
-            w = neighbors.pop()
-            distance = distance+1
+            if len(neighbors)>0:
+                w = neighbors.pop()
+                distance = distance+1
+            else:
+                break
         return  distance
 
 
@@ -52,17 +55,36 @@ class ClosenessCentrality():
         n = len(graph)
         k = math.log(n,10) / np.power(epsilon, 2)
         closeness = {}
-        for v in graph.nodes():
-            bfsTree = nx.bfs_tree(graph, v)
+        for u in graph.nodes():
+            #bfsTree = nx.bfs_tree(graph, u)
             fv = 0
-            nodes = np.array(list(bfsTree.nodes()))
-            nodes = np.random.choice(nodes, size= int(k), replace= False)
+            #nodes = np.array(list(bfsTree.nodes()))
+            nodes = np.random.choice(list(graph.nodes()), size= int(k), replace= False)
             for w in nodes:
-                distance = self.distance(bfsTree, v, w)
+                bfsTree = nx.bfs_tree(graph, w)
+                distance = self.distance(bfsTree, w, u)
                 fv = fv+distance*(n/(k*(n-1)))
 
             if fv!=0:
-                closeness[v] = 1/fv
+                closeness[u] = 1/fv
+            else:
+                closeness[u] = 0
+
+        return  closeness
+
+
+    def armonicCloseness(self, graph):
+
+        closeness ={}
+        for v in graph.nodes():
+            bfsTree = nx.bfs_tree(graph, v)
+            fv = 0
+            for w in bfsTree.nodes():
+                distance = self.distance(bfsTree, v, w)
+                if distance>0:
+                    fv = fv + 1/distance #vs my version
+            if fv!=0:
+                closeness[v] = fv
             else:
                 closeness[v] = 0
 

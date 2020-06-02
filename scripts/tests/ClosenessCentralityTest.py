@@ -40,8 +40,8 @@ class ClosenessCentralityTest(unittest.TestCase):
 
     def testClosenessUsingEWAlgorithm(self):
         epsilon = 0.5
-        n = 100 # 10 nodes
-        m = 200  # 20 edges
+        n = 10 # 10 nodes
+        m = 20  # 20 edges
         G = nx.gnm_random_graph(n, m)
         actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
         print(actualy)
@@ -52,6 +52,11 @@ class ClosenessCentralityTest(unittest.TestCase):
             abs_error = np.abs((1 / actualy[key]) - (1 / expected[key]))
             result = result and abs_error < epsilon
         self.assertTrue(result)
+
+    def testArmonicCloseness(self):
+        actualy = self.closeness.armonicCloseness(self.graph)
+        expected = nx.harmonic_centrality(self.graph)
+        self.assertEqual(expected, actualy)
 
 
 if __name__ == '__main__':
