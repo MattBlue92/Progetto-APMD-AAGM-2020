@@ -50,18 +50,14 @@ class ClosenessCentralityTest(unittest.TestCase):
 
     def testClosenessUsingEWAlgorithm(self):
         epsilon = 0.5
-
         n = 1000 # 10 nodes
         m = 2000  # 20 edges
         G = nx.gnm_random_graph(n, m)
-
         actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
-        print(actualy)
         expected = self.closeness.closenessUsingUtilities(G)
-        print(expected)
         result = True
         for key in actualy.keys():
-            abs_error = np.abs((1 / actualy[key]) - (1 / expected[key]))
+            abs_error = np.abs((1 / (actualy[key]+0.5)) - (1 / (expected[key]+0.5)))
             result = result and abs_error < epsilon
         self.assertTrue(result)
 
