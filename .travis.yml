@@ -28,4 +28,5 @@ script:
   - python -m unittest -v scripts.tests.ToolsTest
   - python -m unittest -v scripts.tests.BuilderGraphWithRtreeTest
   - python -m unittest -v scripts.tests.CountingTrianglesTest
+  - python -m unittest -v scripts.tests.ClosenessCentralityTest
   - py.test

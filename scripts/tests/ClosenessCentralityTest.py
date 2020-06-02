@@ -12,11 +12,16 @@ class ClosenessCentralityTest(unittest.TestCase):
         df = manager.create_dataset_test()
         self.graph = manager.expected_graph_creation(df)
         self.closeness = ClosenessCentrality()
-
+        self.disconnectedGraph=manager.createDisconnectedGraph()
 
     def testClosenessCentralityUsingUtilities(self):
         actualy = self.closeness.closenessUsingUtilities(self.graph)
         expected = nx.closeness_centrality(self.graph, wf_improved=False)
+        self.assertEqual(expected, actualy)
+
+    def testClosenessCentralityUsingUtilitiesWithDisconnectedGraph(self):
+        actualy=self.closeness.closenessUsingUtilities(self.disconnectedGraph, networkx=True)
+        expected=nx.closeness_centrality(self.disconnectedGraph, wf_improved=False)
         self.assertEqual(expected, actualy)
 
     def testClosenessCentralityUsingBFS(self):
@@ -31,6 +36,11 @@ class ClosenessCentralityTest(unittest.TestCase):
         expected = nx.closeness_centrality(G, wf_improved=False)
         self.assertEqual(expected, actualy)
 
+    def testClosenessCentralityUsingBFSWithDisconnectedGraph(self):
+        actualy=self.closeness.closenessUsingBFS(self.disconnectedGraph, networkx=True)
+        expected=nx.closeness_centrality(self.disconnectedGraph, wf_improved=False)
+        self.assertEqual(expected, actualy)
+
     def testClosenessCentralityUsingUtilitieswithIsolatedNode(self):
         G = nx.Graph()
         G.add_node(1)
@@ -40,12 +50,14 @@ class ClosenessCentralityTest(unittest.TestCase):
 
     def testClosenessUsingEWAlgorithm(self):
         epsilon = 0.5
-        n = 10 # 10 nodes
-        m = 20  # 20 edges
+
+        n = 1000 # 10 nodes
+        m = 2000  # 20 edges
         G = nx.gnm_random_graph(n, m)
+
         actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
         print(actualy)
-        expected = nx.closeness_centrality(G, wf_improved=False)
+        expected = self.closeness.closenessUsingUtilities(G)
         print(expected)
         result = True
         for key in actualy.keys():

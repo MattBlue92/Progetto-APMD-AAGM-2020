@@ -29,3 +29,9 @@ class BuilderGraphTestingManeger:
               }
         df = pd.DataFrame(df)
         return df
+
+    def createDisconnectedGraph(self):
+        edges = [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (3, 4), (3, 5), (4, 3), (4, 5), (5, 4), (5, 3)]
+        graph = nx.Graph()
+        graph.add_edges_from(edges)
+        return graph

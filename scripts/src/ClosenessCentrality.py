@@ -7,31 +7,39 @@ class ClosenessCentrality():
     def __init__(self):
         np.random.seed(42)
 
-    def closenessUsingUtilities(self, graph):
+    def closenessUsingUtilities(self, graph, networkx=False):
         closeness = {}
         for v in graph.nodes():
             fv = 0
+            count=0
             for w in graph.nodes():
-                if nx.has_path(graph, v, w) and v!=w:
-                    pippo = nx.shortest_path(graph, v, w)
-                    fv = fv + len(nx.shortest_path(graph, v, w))-1
-
+                if nx.has_path(graph, v, w):
+                    if v!=w:
+                        path = nx.shortest_path(graph, v, w)
+                        fv = fv + len(path)-1
+                    count=count+1
             if fv!=0:
-                closeness[v] = (len(graph)-1)/fv
+                if not networkx:
+                    closeness[v]=(len(graph)-1)/fv
+                else:
+                    closeness[v] = (count-1)/fv
             else:
                 closeness[v] = 0
 
         return closeness
 
-    def closenessUsingBFS(self, graph):
+    def closenessUsingBFS(self, graph, networkx=False):
         closeness = {}
         for v in graph.nodes():
             bfsTree = nx.bfs_tree(graph, v)
             fv = 0
             for w in bfsTree.nodes():
-                fv = fv + self.distance(bfsTree, v, w) #vs my version
+                fv = fv + self.distance(bfsTree, v, w)
             if fv!=0:
-                closeness[v] = (len(graph)-1)/fv
+                if not networkx:
+                    closeness[v] = (len(graph)-1)/fv
+                else:
+                    closeness[v] = (len(bfsTree) - 1) / fv
             else:
                 closeness[v] = 0
 

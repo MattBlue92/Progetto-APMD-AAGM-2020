@@ -15,3 +15,6 @@ def test_building_graph():
 
 def test_counting_triangles():
     _exec_notebook('notebooks/Counting_triangles.ipynb')
+
+def test_closeness_centrality():
+    _exec_notebook('notebooks/ClosenessCentrality.ipynb')
