@@ -50,8 +50,9 @@ class ClosenessCentrality():
         distance = 0
         bfsTree = bfsTree.reverse(copy = True)
         while v!=w:
-            neighbors = list(bfsTree[w])
-            if len(neighbors)>0:
+            #neighbors = list(bfsTree[w])
+            if w  in list(bfsTree.nodes()):
+                neighbors = list(bfsTree[w])
                 w = neighbors.pop()
                 distance = distance+1
             else:
@@ -61,13 +62,17 @@ class ClosenessCentrality():
 
     def closenessUsingEWAlgorithm(self, graph, epsilon):
         n = len(graph)
-        k = math.log(n,10) / np.power(epsilon, 2)
+        k = int(math.log(n,10) / np.power(epsilon, 2))
         closeness = {}
+        i = 0
         for u in graph.nodes():
             #bfsTree = nx.bfs_tree(graph, u)
             fv = 0
             #nodes = np.array(list(bfsTree.nodes()))
-            nodes = np.random.choice(list(graph.nodes()), size= int(k), replace= False)
+            nodes = np.random.choice(list(graph.nodes()), size= k, replace= False)
+            #nodes= nodes[0]
+            print("Iteration {} : {}".format(i,nodes))
+            i = i+1
             for w in nodes:
                 bfsTree = nx.bfs_tree(graph, w)
                 distance = self.distance(bfsTree, w, u)
