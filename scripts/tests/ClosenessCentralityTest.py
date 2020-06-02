@@ -51,8 +51,8 @@ class ClosenessCentralityTest(unittest.TestCase):
     def testClosenessUsingEWAlgorithm(self):
         epsilon = 0.5
 
-        n = 50 # 10 nodes
-        m = 100  # 20 edges
+        n = 1000 # 10 nodes
+        m = 2000  # 20 edges
         G = nx.gnm_random_graph(n, m)
         print(list(G.nodes()))
         actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)

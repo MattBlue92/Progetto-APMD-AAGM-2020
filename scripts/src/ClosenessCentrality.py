@@ -71,7 +71,7 @@ class ClosenessCentrality():
             #nodes = np.array(list(bfsTree.nodes()))
             nodes = np.random.choice(list(graph.nodes()), size= k, replace= False)
             #nodes= nodes[0]
-            print("Iteration {} : {}".format(i,nodes))
+            #print("Iteration {} : {}".format(i,nodes))
             i = i+1
             for w in nodes:
                 bfsTree = nx.bfs_tree(graph, w)
