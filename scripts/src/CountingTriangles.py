@@ -44,9 +44,8 @@ class DelegatingLowDegreeVertices(CountingTriangles):
     def run(self, graph):
         triangles = 0
         nodes=graph.nodes._nodes
-        #marked=list(map(False, nodes))
         for v in nodes:
-            neighbors = list(filter(lambda x:  graph.degree(x)> graph.degree(v), list(graph[v])))
+            neighbors = list(filter(lambda x:  graph.degree(x)> graph.degree(v) or (graph.degree(x)==graph.degree(v) and x>v), list(graph[v])))
             couples = combinations(neighbors, 2)
             triangles=triangles+self.countTrianglesFromCouples(couples, graph, v)
         return triangles
