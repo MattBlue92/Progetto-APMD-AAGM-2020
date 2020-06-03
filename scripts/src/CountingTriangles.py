@@ -16,11 +16,12 @@ class CountingTriangles(object):
 class ObviousAlgorithm(CountingTriangles):
     def run(self, graph):
         triangles = {}
-        for v in graph.nodes:
-            nodes = list(graph.nodes)
-            if v in nodes:
-                nodes.remove(v)
-            couples = combinations(nodes, 2)
+        nodes = graph.nodes._nodes
+        for v in nodes:
+            nodes_list = list(nodes)
+            if v in nodes_list:
+                nodes_list.remove(v)
+            couples = combinations(nodes_list, 2)
             t = self.countTrianglesFromCouples(couples, graph, v)
             triangles[v] = t
 
@@ -29,7 +30,8 @@ class ObviousAlgorithm(CountingTriangles):
 class EnumeratingNeighborPairs(CountingTriangles):
     def run(self, graph):
         triangles = {}
-        for v in graph.nodes():
+        nodes = graph.nodes._nodes
+        for v in nodes:
             neighbors = list(graph[v])
             if v in neighbors:
                 neighbors.remove(v)
@@ -41,8 +43,9 @@ class EnumeratingNeighborPairs(CountingTriangles):
 class DelegatingLowDegreeVertices(CountingTriangles):
     def run(self, graph):
         triangles = 0
-        for v in graph.nodes():
-            neighbors = list(filter(lambda x:  graph.degree(x)> graph.degree(v), list(graph[v])))
+        nodes=graph.nodes._nodes
+        for v in nodes:
+            neighbors = list(filter(lambda x:  graph.degree(x)> graph.degree(v) or (graph.degree(x)==graph.degree(v) and x>v), list(graph[v])))
             couples = combinations(neighbors, 2)
             triangles=triangles+self.countTrianglesFromCouples(couples, graph, v)
         return triangles

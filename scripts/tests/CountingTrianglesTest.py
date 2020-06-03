@@ -23,6 +23,13 @@ class CountingTrianglesTest(unittest.TestCase):
         actualTriangles = ct.DelegatingLowDegreeVertices().run(self.graph)
         self.assertEqual(expectedTriangles, actualTriangles)
 
+    def testDelegatingLowDegreeVerticesWithStar(self):
+        graph=nx.star_graph(10)
+        graph.add_edge(2,3)
+        expectedTriangles = sum(nx.triangles(graph).values())/3
+        actualTriangles = ct.DelegatingLowDegreeVertices().run(graph)
+        self.assertEqual(expectedTriangles, actualTriangles)
+
     def manageCountingTrianglesTesting(self, counter):
         expectedTriangles = nx.triangles(self.graph)
         actualTriangles = counter.run(self.graph)
