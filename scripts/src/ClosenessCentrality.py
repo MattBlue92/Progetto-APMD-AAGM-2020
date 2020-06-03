@@ -4,10 +4,6 @@ import numpy as np
 import math
 class ClosenessCentrality():
 
-    def __init__(self):
-        np.random.seed(42)
-
-
     def closenessUsingUtilities(self, graph, networkx=False):
         closeness = {}
         nodes=graph.nodes._nodes
@@ -53,6 +49,7 @@ class ClosenessCentrality():
         return closeness
 
     def closenessUsingEWAlgorithm(self, graph, epsilon):
+        np.random.seed(47)
         n = len(graph)
         k = int(math.log(n,10) / np.power(epsilon, 2))
         closeness = {}
