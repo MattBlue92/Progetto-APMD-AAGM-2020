@@ -55,11 +55,23 @@ class ClosenessCentralityTest(unittest.TestCase):
         G = nx.gnm_random_graph(n, m, seed=42)
         actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
         expected = self.closeness.closenessUsingUtilities(G)
+        self.assertTrue(self.checkAsymptoticConvergence(expected, actualy, epsilon))
+
+    def checkAsymptoticConvergence(self, expected, actual, epsilon):
         result = True
-        for key in actualy.keys():
-            abs_error = np.abs((1 / (actualy[key]+0.5)) - (1 / (expected[key]+0.5)))
+        for key in actual.keys():
+            if actual[key] == 0:
+                c_hat = 0
+            else:
+                c_hat = 1 / actual[key]
+            if expected[key] == 0:
+                c = 0
+            else:
+                c = 1 / expected[key]
+            abs_error = abs(c_hat - c)
+            print("actual: {}, expected: {}, error: {}".format(c_hat, c, abs_error))
             result = result and abs_error < epsilon
-        self.assertTrue(result)
+        return result
 
     def testArmonicCloseness(self):
         actualy = self.closeness.armonicCloseness(self.graph)
