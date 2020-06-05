@@ -37,7 +37,7 @@ class ClosenessCentrality():
         closeness = {}
 
         sample_nodes = np.random.choice(list(nodes), size=k, replace=False)
-        dict_distance = {w:self.distance_dict_bfs(graph,w) for w in sample_nodes}
+        dict_distance = dict(map(lambda w: (w, self.distance_dict_bfs(graph, w)), sample_nodes))
 
         for u in nodes:
             fv = 0

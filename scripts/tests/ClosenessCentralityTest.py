@@ -40,7 +40,7 @@ class ClosenessCentralityTest(unittest.TestCase):
 
         largest_cc = max(nx.connected_components(G), key=len)
         G=G.subgraph(largest_cc)
-        actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon,1)
+        actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
         expected = nx.closeness_centrality(G, wf_improved=False)
         self.assertTrue(self.checkAsymptoticConvergence(expected, actualy, epsilon))
 
