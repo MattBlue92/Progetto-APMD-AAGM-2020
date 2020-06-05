@@ -4,29 +4,6 @@ import numpy as np
 import math
 class ClosenessCentrality():
 
-    def closenessUsingUtilities(self, graph, networkx=False):
-        closeness = {}
-        nodes=graph.nodes._nodes
-        len_nodes=len(nodes)
-        for v in nodes:
-            fv = 0
-            count=0
-            for w in nodes:
-                if nx.has_path(graph, v, w):
-                    if v!=w:
-                        path = nx.shortest_path(graph, v, w)
-                        fv = fv + len(path)-1
-                    count=count+1
-            if fv!=0:
-                if not networkx:
-                    closeness[v]=(len_nodes-1)/fv
-                else:
-                    closeness[v] = (count-1)/fv
-            else:
-                closeness[v] = 0
-
-        return closeness
-
     def closenessUsingBFS(self, graph, networkx=False):
         closeness = {}
         nodes=graph.nodes._nodes
@@ -72,21 +49,6 @@ class ClosenessCentrality():
         return  closeness
 
 
-    def armonicCloseness(self, graph):
-        closeness ={}
-        for v in graph.nodes():
-            bfsTree = nx.bfs_tree(graph, v)
-            fv = 0
-            for w in bfsTree.nodes():
-                distance = self.distance(bfsTree, v, w)
-                if distance>0:
-                    fv = fv + 1/distance
-            if fv!=0:
-                closeness[v] = fv
-            else:
-                closeness[v] = 0
-
-        return  closeness
 
     def distance(self, bfsTree, v, w):
         distance = 0
