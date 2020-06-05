@@ -29,10 +29,10 @@ class ClosenessCentrality():
         return closeness
 
 
-    def closenessUsingEWAlgorithm(self ,graph, epsilon, c):
+    def closenessUsingEWAlgorithm(self ,graph, epsilon):
         # we suppose that graph is a connected component
         n = len(graph)
-        k = math.floor(math.log(n, 10) / np.power(epsilon, 2))*c
+        k = math.floor(math.log(n, 10) / np.power(epsilon, 2))
         nodes = graph.nodes._nodes
         closeness = {}
 
@@ -49,7 +49,7 @@ class ClosenessCentrality():
         return closeness
 
     def distance_dict_bfs(self, graph, w):
-        # return the dict {(u,v): d(u,v), v in V e w in S}
+        # return the dict {v: d(v,w), v in V}
         dist = {}
         queue = [w]
         marked = [w]
