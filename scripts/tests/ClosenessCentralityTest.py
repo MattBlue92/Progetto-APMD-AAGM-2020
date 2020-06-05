@@ -33,14 +33,14 @@ class ClosenessCentralityTest(unittest.TestCase):
 
 
     def testClosenessUsingEWAlgorithm(self):
-        epsilon = 0.5
-        n = 100
-        m = 200
+        epsilon = 0.06
+        n = 1000
+        m = 2000
         G = nx.gnm_random_graph(n, m, seed=42)
 
         largest_cc = max(nx.connected_components(G), key=len)
         G=G.subgraph(largest_cc)
-        actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon)
+        actualy = self.closeness.closenessUsingEWAlgorithm(G, epsilon,1)
         expected = nx.closeness_centrality(G, wf_improved=False)
         self.assertTrue(self.checkAsymptoticConvergence(expected, actualy, epsilon))
 
@@ -50,9 +50,16 @@ class ClosenessCentralityTest(unittest.TestCase):
             c_hat = 1 / actual[key]
             c = 1 / expected[key]
             abs_error = abs(c_hat - c)
-            print("actual: {}, expected: {}, error: {}".format(c_hat, c, abs_error))
+            if abs_error>=epsilon:
+                print("actual: {}, expected: {}, error: {}".format(c_hat, c, abs_error))
             result = result and abs_error < epsilon
         return result
+
+    def testDistance_dict_bfs(self):
+        G = nx.house_graph()
+        actual = self.closeness.distance_dict_bfs(G,4)
+        expected = {4:0, 3: 1, 2:1, 1:2, 0:2 }
+        self.assertEqual(actual,expected)
 
 if __name__ == '__main__':
     unittest.main()
