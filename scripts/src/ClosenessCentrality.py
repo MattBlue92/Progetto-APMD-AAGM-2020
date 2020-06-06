@@ -8,6 +8,7 @@ class ClosenessCentrality():
         np.random.seed(47)
 
     def closenessUsingBFS(self, graph, networkx=False):
+        #We suppose that  graph is a maximal connected component. (isolated nodes aren't allow )
         closeness = {}
         nodes=graph.nodes._nodes
         len_nodes=len(nodes)
@@ -18,33 +19,32 @@ class ClosenessCentrality():
             fv = 0
             for w in bfs_nodes:
                 fv = fv + self.distance(bfsTree, v, w)
-            if fv!=0:
-                if not networkx:
-                    closeness[v] = (len_nodes-1)/fv
-                else:
-                    closeness[v] = (len_bfs_nodes - 1) / fv
+
+            if not networkx:
+                closeness[v] = (len_nodes-1)/fv
             else:
-                closeness[v] = 0
+                closeness[v] = (len_bfs_nodes - 1) / fv
+
 
         return closeness
 
 
     def closenessUsingEWAlgorithm(self ,graph, epsilon):
-        # we suppose that graph is a connected component
+        # we suppose that graph is a maximal connected component. (isolated nodes aren't allow )
         n = len(graph)
         k = math.floor(math.log(n, 10) / np.power(epsilon, 2))
         nodes = graph.nodes._nodes
         closeness = {}
 
         sample_nodes = np.random.choice(list(nodes), size=k, replace=False)
-        dict_distance = dict(map(lambda w: (w, self.distance_dict_bfs(graph, w)), sample_nodes))
+        dict_distance = dict(map(lambda w: (w, self.distance_dict_bfs(graph, w)), sample_nodes))#
+
 
         for u in nodes:
             fv = 0
             for w in sample_nodes:
                 fv = fv + dict_distance[w][u]*(n / (k*(n - 1)))
             closeness[u] = 1/fv
-
 
         return closeness
 

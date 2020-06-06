@@ -19,17 +19,8 @@ class ClosenessCentralityTest(unittest.TestCase):
         expected = nx.closeness_centrality(self.graph, wf_improved=False)
         self.assertEqual(expected, actualy)
 
-    def testClosenessCentralityUsingBFSwithIsolatedNode(self):
-        G = nx.Graph()
-        G.add_node(1)
-        actualy = self.closeness.closenessUsingBFS(G)
-        expected = nx.closeness_centrality(G, wf_improved=False)
-        self.assertEqual(expected, actualy)
 
-    def testClosenessCentralityUsingBFSWithDisconnectedGraph(self):
-        actualy=self.closeness.closenessUsingBFS(self.disconnectedGraph, networkx=True)
-        expected=nx.closeness_centrality(self.disconnectedGraph, wf_improved=False)
-        self.assertEqual(expected, actualy)
+
 
 
     def testClosenessUsingEWAlgorithm(self):
