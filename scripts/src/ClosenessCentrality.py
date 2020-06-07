@@ -2,12 +2,9 @@
 import networkx as nx
 import numpy as np
 import math
-class ClosenessCentrality():
+class ClosenessCentralityBFS():
 
-    def __init__(self):
-        np.random.seed(47)
-
-    def closenessUsingBFS(self, graph, networkx=False):
+    def run(self, graph, networkx=False):
         #We suppose that  graph is a maximal connected component. (isolated nodes aren't allow )
         closeness = {}
         nodes=graph.nodes._nodes
@@ -28,24 +25,42 @@ class ClosenessCentrality():
 
         return closeness
 
+    def distance(self, bfsTree, v, w):
+        distance = 0
+        bfsTree = bfsTree.reverse(copy = True)
+        while v!=w:
+            bfsTreeNodes=bfsTree.nodes._nodes
+            if w  in bfsTreeNodes:
+                neighbors = list(bfsTree[w])
+                w = neighbors.pop()
+                distance = distance+1
+            else:
+                break
+        return  distance
 
-    def closenessUsingEWAlgorithm(self ,graph, epsilon):
-        # we suppose that graph is a maximal connected component. (isolated nodes aren't allow )
-        n = len(graph)
-        k = math.floor(math.log(n, 10) / np.power(epsilon, 2))
-        nodes = graph.nodes._nodes
+
+class EWAlgorithm:
+    def __init__(self, graph, epsilon):
+        self.graph = graph
+        self.nodes = graph.nodes._nodes
+        self.numNodes = len(self.nodes)
+        self.k = math.floor(math.log(self.numNodes, 10) / np.power(epsilon, 2))
+        self.alpha = self.numNodes / (self.k * (self.numNodes - 1))
+        np.random.seed(48)
+        if self.k<self.numNodes:
+            self.sample_nodes = np.random.choice(list(self.nodes), size=self.k, replace=False)
+        else:
+            raise ValueError("Con k = {} Non si può costruire un campione più grande del numero di nodi presenti nel grafo".format(self.k))
+
+
+    def run(self):
         closeness = {}
-
-        sample_nodes = np.random.choice(list(nodes), size=k, replace=False)
-        dict_distance = dict(map(lambda w: (w, self.distance_dict_bfs(graph, w)), sample_nodes))#
-
-
-        for u in nodes:
+        dict_distance = dict(map(lambda w: (w, self.distance_dict_bfs(self.graph, w)), self.sample_nodes))
+        for u in self.nodes:
             fv = 0
-            for w in sample_nodes:
-                fv = fv + dict_distance[w][u]*(n / (k*(n - 1)))
+            for w in self.sample_nodes:
+                fv = fv+dict_distance[w][u]*self.alpha
             closeness[u] = 1/fv
-
         return closeness
 
     def distance_dict_bfs(self, graph, w):
@@ -62,17 +77,3 @@ class ClosenessCentrality():
                     queue.append(u)
                     dist[u] = dist[v] + 1
         return dist
-
-
-    def distance(self, bfsTree, v, w):
-        distance = 0
-        bfsTree = bfsTree.reverse(copy = True)
-        while v!=w:
-            bfsTreeNodes=bfsTree.nodes._nodes
-            if w  in bfsTreeNodes:
-                neighbors = list(bfsTree[w])
-                w = neighbors.pop()
-                distance = distance+1
-            else:
-                break
-        return  distance
