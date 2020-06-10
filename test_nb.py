@@ -21,3 +21,6 @@ def test_closeness_centrality():
 
 def test_performances():
     _exec_notebook('notebooks/Performances.ipynb')
+
+def test_data_analysis():
+    _exec_notebook('notebooks/DataAnalysis.ipynb')
