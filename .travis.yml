@@ -4,6 +4,7 @@ python:
  
     
 install:
+  - travis_wait 30 mvn install
   - sudo apt-get update
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
@@ -23,7 +24,6 @@ install:
   - conda env create -n test-environment python=$TRAVIS_PYTHON_VERSION -f environment.yml
   - source activate test-environment
 
-  
 script:
   - python -m unittest -v scripts.tests.ToolsTest
   - python -m unittest -v scripts.tests.BuilderGraphWithRtreeTest
