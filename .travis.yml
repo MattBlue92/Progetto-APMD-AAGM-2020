@@ -4,7 +4,6 @@ python:
  
     
 install:
-  - travis_wait 30 mvn install
   - sudo apt-get update
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
@@ -29,4 +28,4 @@ script:
   - python -m unittest -v scripts.tests.BuilderGraphWithRtreeTest
   - python -m unittest -v scripts.tests.CountingTrianglesTest
   - python -m unittest -v scripts.tests.ClosenessCentralityTest
-  - py.test
+  - travis_wait 30 py.test
