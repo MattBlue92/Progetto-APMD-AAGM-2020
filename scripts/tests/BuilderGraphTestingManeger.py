@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from scripts.src.Tools import Connections
+from scripts.tests.Tools import Connections
 
 
 class BuilderGraphTestingManeger:
