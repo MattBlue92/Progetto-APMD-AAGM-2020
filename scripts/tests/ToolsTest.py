@@ -1,7 +1,7 @@
 import unittest
 
 
-import scripts.src.Tools as t
+import scripts.tests.Tools as t
 
 
 class ToolsTest(unittest.TestCase):

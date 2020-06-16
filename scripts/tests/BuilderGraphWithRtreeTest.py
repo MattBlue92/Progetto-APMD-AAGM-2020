@@ -2,7 +2,7 @@ import unittest
 import networkx as nx
 
 from scripts.src.BuilderGraphWithRtree import BuilderGraphWithRtree
-from scripts.src.Tools import Connections
+from scripts.tests.Tools import Connections
 from scripts.tests.BuilderGraphTestingManeger import BuilderGraphTestingManeger
 
 
