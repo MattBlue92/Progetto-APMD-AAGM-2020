@@ -24,3 +24,6 @@ def test_performances():
 
 def test_data_analysis():
     _exec_notebook('notebooks/DataAnalysis.ipynb')
+
+def test_notebook_nocentini():
+    _exec_notebook('ghera-marulli.ipynb')
