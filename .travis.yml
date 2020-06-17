@@ -22,6 +22,7 @@ install:
 
   - conda env create -n test-environment python=$TRAVIS_PYTHON_VERSION -f environment.yml
   - source activate test-environment
+  - conda install -c anaconda ipython
 
 script:
   - python -m unittest -v scripts.tests.ToolsTest
@@ -29,3 +30,4 @@ script:
   - python -m unittest -v scripts.tests.CountingTrianglesTest
   - python -m unittest -v scripts.tests.ClosenessCentralityTest
   - travis_wait 30 py.test
+  - ipython ghera-marulli.py
