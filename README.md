@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/MattBlue92/Progetto-APMD-AAGM-2020.svg?branch=master)](https://travis-ci.org/MattBlue92/Progetto-APMD-AAGM-2020)
 
 Questo progetto contiente il codice python, i notebook, gli articoli e le slide per il progetto
-del corso  di Algorithm and Programming for Massive Data.
+del corso  di Algorithms and Programming for Massive Data/Advanced Algorithms and Graph Mining.
 
 ## Prerequisiti
 
