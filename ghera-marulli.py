@@ -5,9 +5,11 @@
 #             Matteo Marulli     matteo.marulli@stud.unifi.it
 #######################################################################################################################
 
-#run instruction:
+# run instruction:
 #
-#runfile('E:/Documenti/Magistrale/PycharmProject/Progetto-APMD-AAGM-2020/ghera-marulli.py', wdir='E:/Documenti/Magistrale/PycharmProject/Progetto-APMD-AAGM-2020')
+# ipython ghera-marulli.py
+# or
+# runfile('E:/Documenti/Magistrale/PycharmProject/Progetto-APMD-AAGM-2020/ghera-marulli.py', wdir='E:/Documenti/Magistrale/PycharmProject/Progetto-APMD-AAGM-2020')
 
 # BuilderGraphWithRtree.py
 
@@ -227,6 +229,12 @@ class DelegatingLowDegreeVertices(CountingTriangles):
 
 #################### Notebooks
 
+from datetime import datetime
+
+
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": start execution of notebooks...")
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": start execution of 'Building the graph' notebook...")
+
 # # Building the graph
 
 # In[1]:
@@ -277,6 +285,7 @@ os.chdir(PROJ_DIR)
 
 # In[5]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": import data from 'dpc-covid19-ita-province.json'...")
 
 import json
 
@@ -287,6 +296,7 @@ covid19_dataset = pd.DataFrame(d)
 
 # In[6]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": creation of dataset 'province'...")
 
 covid19_dataset.drop_duplicates(subset=['denominazione_provincia'], inplace=True)
 covid19_dataset = covid19_dataset[covid19_dataset != "In fase di definizione/aggiornamento"]
@@ -299,23 +309,28 @@ province.head()
 
 # In[7]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": set d=0.8 for P and R network...")
 
 d_provincia = 0.8
 d_random = 0.8
 
 # In[8]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": create P network...")
 
 builderGraph4 = BuilderGraphWithRtree(d_provincia, province.copy())
 P = builderGraph4.buildGraph()
 
 # In[9]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": print statistics for P network...")
 
 print(statisticsOfGraph(P))
 
 # In[10]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": P network (Italy graph) visualization...")
+print("View network visualization in SciView.")
 
 plt.figure(figsize=(22, 20), dpi=150)
 makeUpGraph(P, province, ['citta', 'long', 'lat'], 5000)
@@ -323,13 +338,14 @@ plt.show()
 
 # In[11]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": compute execution time of network builder for P network...")
 get_ipython().run_line_magic('timeit', 'builderGraph4.buildGraph()')
 
 # ## Random Dataset
 
 # In[12]:
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": random dataset creation...")
 
 data = np.random.uniform([30, 10], [50, 20], size=(2000, 2))
 id = np.array([np.arange(2000)])
@@ -341,43 +357,45 @@ data.head()
 
 # In[13]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": R network creation...")
 builderGraph4 = BuilderGraphWithRtree(d_random, data.copy())
 R = builderGraph4.buildGraph()
 
 # In[14]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": print statistics for R network...")
 print(statisticsOfGraph(R))
 
 # In[15]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": compute execution time of network builder for P network...")
 get_ipython().run_line_magic('timeit', 'builderGraph4.buildGraph()')
 
 # ## Weighted graphs
 
 # In[16]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": P weighted weighted creation...")
 builderGraph4 = BuilderGraphWithRtree(d_provincia, province.copy())
 P_weight = builderGraph4.buildGraph(flag=True)
 
 # In[17]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": R weighted weighted creation...")
 builderGraph4 = BuilderGraphWithRtree(d_random, data.copy())
 R_weight = builderGraph4.buildGraph(flag=True)
 
 # In[18]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": backup networks in files...")
 nx.write_adjlist(P, DATA_DIR / "P.adjlist", delimiter=",")
 nx.write_weighted_edgelist(P_weight, DATA_DIR / "P_weight.edgelist", delimiter=",")
 nx.write_adjlist(R, DATA_DIR / "R.adjlist", delimiter=",")
 nx.write_weighted_edgelist(R_weight, DATA_DIR / "R_weight.edgelist", delimiter=",")
 
 
+
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": start execution of 'Closeness Centrality' notebook...")
 # # Closeness Centrality
 
 # In[1]:
@@ -416,54 +434,62 @@ def checkAsymptoticConvergence(expected, actual, epsilon, d):
 
 
 # import networks
-P=nx.read_adjlist(DATA_DIR/"P.adjlist", delimiter=",")
-R=nx.read_adjlist(DATA_DIR/"R.adjlist", delimiter=",")
+#P=nx.read_adjlist(DATA_DIR/"P.adjlist", delimiter=",")
+#R=nx.read_adjlist(DATA_DIR/"R.adjlist", delimiter=",")
 
 
 # ## P network
 
 # In[5]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": P maximal connected components calculation...")
 largest_cc = max(nx.connected_components(P), key=len)
 P=P.subgraph(largest_cc)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Now Networkx make the closeness centrality calculation for P.")
 expected = nx.closeness_centrality(P, wf_improved=False)
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx has finished calculating the closeness centrality. Now we use it for check own algorithms")
 
 # In[6]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run algorithm of closeness centrality with BFS...")
 cc = ClosenessCentralityBFS()
 actual = cc.run(P, networkx=True)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check results...")
 assert expected == actual
 
 
 # In[7]:
 
 
-print("Expected: {} \n Actual: {}".format(expected, actual))
+#print("Expected: {} \n Actual: {}".format(expected, actual))
 
 
 # In[8]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": setup algorithm EW on P network...")
 epsilon=0.165
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": set epsilon=0.165")
 EW = EWAlgorithm(P,epsilon)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Now Networkx make the closeness centrality calculation for P.")
 expected = nx.closeness_centrality(P, wf_improved=False)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx has finished calculating the closeness centrality. Now we use it for check own algorithms")
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run EW algorithm with epsilon=0.165 on P network...")
 actual = EW.run()
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx compute the diameter of P network")
 diameter = nx.diameter(P)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the asymptotic convergence....")
 assert checkAsymptoticConvergence(actual, expected, epsilon, diameter)
 
 
 # In[9]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": compute execution time for calculate of closeness centrality using BFS algorithm on P network...")
 get_ipython().run_line_magic('timeit', 'cc.run(P, networkx=True)')
 
 
 # In[10]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": compute execution time for calculate of closeness centrality using EW algorithm on P network...")
 get_ipython().run_line_magic('timeit', 'EW.run()')
 
 
@@ -471,34 +497,40 @@ get_ipython().run_line_magic('timeit', 'EW.run()')
 
 # In[11]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": R maximal connected components calculation...")
 largest_cc = max(nx.connected_components(R), key=len)
 R=R.subgraph(largest_cc)
 
 
 # In[12]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Now Networkx make the closeness centrality calculation for R.")
 expected = nx.closeness_centrality(R, wf_improved=False)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx has finished calculating the closeness centrality. Now we use it for check own algorithms")
 
 
 # In[13]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": setup algorithm EW on R network...")
 epsilon=0.2
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": set epsilon=0.2")
 EW = EWAlgorithm(R, epsilon)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run EW algorithm with epsilon=0.2 on R network...")
 actual = EW.run()
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx compute the diameter of R network")
 diameter = nx.extrema_bounding(R, compute='diameter')
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the asymptotic convergence....")
 assert checkAsymptoticConvergence(actual,expected, epsilon, diameter)
 
 
 # In[14]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": compute execution time for calculate of closeness centrality using EW algorithm on R network...")
 get_ipython().run_line_magic('timeit', '-r 1 EW.run()')
 
 
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": start execution of 'Counting triangles' notebook...")
 
 # # Counting triangles
 
@@ -528,37 +560,41 @@ get_ipython().run_line_magic('timeit', '-r 1 EW.run()')
 
 
 # import networks
-P=nx.read_adjlist(DATA_DIR/"P.adjlist", delimiter=",")
-R=nx.read_adjlist(DATA_DIR/"R.adjlist", delimiter=",")
+#P=nx.read_adjlist(DATA_DIR/"P.adjlist", delimiter=",")
+#R=nx.read_adjlist(DATA_DIR/"R.adjlist", delimiter=",")
 
 
 # ## P network
 
 # In[5]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Now Networkx make the closeness centrality calculation for P.")
 expected=nx.triangles(P)
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx has finished calculating the closeness centrality. Now we use it for check own algorithms")
 
 # In[6]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run obvious algorithm for counting triangles on P network...")
 actual=ObviousAlgorithm().run(P)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the result...")
 assert expected==actual
 
 
 # In[7]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run enumerating on vertex triples algorithm on P network...")
 actual=EnumeratingNeighborPairs().run(P)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the result...")
 assert expected==actual
 
 
 # In[8]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run delegating low-degree vertices algorithm on P network...")
 actual=DelegatingLowDegreeVertices().run(P)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": we divide the total number of triangles in P for 3")
 expected=sum(expected.values())/3
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the result...")
 assert expected==actual
 
 
@@ -566,21 +602,24 @@ assert expected==actual
 
 # In[9]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Now Networkx make the closeness centrality calculation for R.")
 expected=nx.triangles(R)
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": Networkx has finished calculating the closeness centrality. Now we use it for check own algorithms")
 
 # In[10]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run enumerating on vertex triples algorithm on R network...")
 actual=EnumeratingNeighborPairs().run(R)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the result...")
 assert expected==actual
 
 
 # In[11]:
 
-
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": run delegating low-degree vertices algorithm on R network...")
 actual=DelegatingLowDegreeVertices().run(R)
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": we divide the total number of triangles in R for 3")
 expected=sum(expected.values())/3
+print(datetime.now().strftime("%d/%m/%Y %H:%M:%S")+": check the result...")
 assert expected==actual
 
